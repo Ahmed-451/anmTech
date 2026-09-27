@@ -1,0 +1,118 @@
+.section {
+  padding: var(--section-padding-y) 0;
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--section-padding-x);
+}
+
+.header {
+  text-align: center;
+  max-width: var(--container-narrow);
+  margin: 0 auto var(--space-12);
+}
+
+.headline {
+  font-size: var(--text-h2);
+  margin: 0 0 var(--space-4);
+}
+
+.subheadline {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.infoItem {
+  padding: var(--space-6);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.infoTitle {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 var(--space-2);
+}
+
+.infoLink {
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
+  line-height: var(--leading-relaxed);
+}
+
+.infoLink:hover {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.infoLink:not(a) {
+  display: block;
+  color: var(--color-text-secondary);
+}
+
+.mapPlaceholder {
+  aspect-ratio: 16 / 9;
+  background: var(--color-bg-tertiary);
+  border: 1px dashed var(--color-border-default);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+.mapPlaceholder p:first-child {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--text-lg);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.mapNote {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+  max-width: 280px;
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .info {
+    max-width: 400px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .infoLink {
+    transition: none !important;
+  }
+}

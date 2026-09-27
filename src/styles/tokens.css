@@ -1,0 +1,277 @@
+/* Design Tokens for ANM Technologies
+ * Light and dark themes via prefers-color-scheme
+ * Colour palette, type scale, spacing, radii, shadows, motion
+ */
+
+/* ==========================================================================
+   Colour Palette
+   ========================================================================== */
+
+:root {
+  /* Brand colours */
+  --color-brand-blue: #1a8fd0;
+  --color-brand-blue-dark: #1475ad;
+  --color-brand-blue-light: #4db8e6;
+  --color-brand-purple: #6c47d1;
+  --color-brand-purple-dark: #5435a8;
+  --color-brand-purple-light: #9b7ef5;
+
+  /* Semantic colours - Light mode (default) */
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #334155;
+  --color-text-muted: #64748b;
+  --color-text-inverse: #ffffff;
+
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8fafc;
+  --color-bg-tertiary: #f1f5f9;
+  --color-bg-inverse: #0f172a;
+
+  --color-border-subtle: #e2e8f0;
+  --color-border-default: #cbd5e1;
+  --color-border-strong: #94a3b8;
+
+  --color-accent: var(--color-brand-blue);
+  --color-accent-hover: var(--color-brand-blue-dark);
+  --color-accent-light: var(--color-brand-blue-light);
+  --color-accent-bg: #eff6ff;
+  --color-accent-border: #bfdbfe;
+
+  --color-secondary: var(--color-brand-purple);
+  --color-secondary-hover: var(--color-brand-purple-dark);
+  --color-secondary-light: var(--color-brand-purple-light);
+  --color-secondary-bg: #f5f3ff;
+  --color-secondary-border: #ddd6fe;
+
+  --color-success: #059669;
+  --color-success-bg: #ecfdf5;
+  --color-warning: #d97706;
+  --color-warning-bg: #fffbeb;
+  --color-error: #dc2626;
+  --color-error-bg: #fef2f2;
+
+  /* Focus ring */
+  --color-focus: var(--color-brand-blue);
+  --color-focus-offset: #ffffff;
+
+  /* Header */
+  --color-header-bg: rgba(255, 255, 255, 0.9);
+  --color-header-border: var(--color-border-subtle);
+  --color-header-backdrop: blur(8px);
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px 0 rgb(15 23 42 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(15 23 42 / 0.1), 0 1px 2px -1px rgb(15 23 42 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(15 23 42 / 0.1), 0 2px 4px -2px rgb(15 23 42 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(15 23 42 / 0.1), 0 4px 6px -4px rgb(15 23 42 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(15 23 42 / 0.1), 0 8px 10px -6px rgb(15 23 42 / 0.1);
+
+  /* Radii */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* ==========================================================================
+     Type Scale (fluid clamp)
+     ========================================================================== */
+
+  /* Font families */
+  --font-display: 'Syne', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* Fluid type scale using clamp(min, preferred, max) */
+  /* Display sizes */
+  --text-display-xl: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+  --text-display-lg: clamp(2rem, 4vw + 0.5rem, 3.5rem);
+  --text-display-md: clamp(1.75rem, 3vw + 0.5rem, 2.5rem);
+  --text-display-sm: clamp(1.5rem, 2.5vw + 0.5rem, 2rem);
+
+  /* Heading sizes */
+  --text-h1: clamp(2rem, 3vw + 1rem, 3rem);
+  --text-h2: clamp(1.75rem, 2.5vw + 0.75rem, 2.5rem);
+  --text-h3: clamp(1.5rem, 2vw + 0.5rem, 2rem);
+  --text-h4: clamp(1.25rem, 1.5vw + 0.5rem, 1.5rem);
+  --text-h5: clamp(1.125rem, 1vw + 0.5rem, 1.25rem);
+  --text-h6: clamp(1rem, 0.75vw + 0.5rem, 1.125rem);
+
+  /* Body sizes */
+  --text-lg: clamp(1.125rem, 1vw + 0.5rem, 1.25rem);
+  --text-base: clamp(1rem, 0.5vw + 0.5rem, 1.125rem);
+  --text-sm: clamp(0.875rem, 0.25vw + 0.5rem, 1rem);
+  --text-xs: clamp(0.75rem, 0.125vw + 0.5rem, 0.875rem);
+
+  /* Line heights */
+  --leading-tight: 1.1;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+
+  /* Font weights */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* ==========================================================================
+     Spacing Scale
+     ========================================================================== */
+
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* Section padding (fluid) */
+  --section-padding-y: clamp(3rem, 8vw, 6rem);
+  --section-padding-x: clamp(1rem, 5vw, 3rem);
+  --container-max: 75ch;
+  --container-narrow: 55ch;
+
+  /* ==========================================================================
+     Motion
+     ========================================================================== */
+
+  --duration-instant: 0ms;
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 350ms;
+  --duration-slower: 500ms;
+
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-expo-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ==========================================================================
+     Z-Index
+     ========================================================================== */
+
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+}
+
+/* ==========================================================================
+   Dark Mode
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text-primary: #f8fafc;
+    --color-text-secondary: #e2e8f0;
+    --color-text-muted: #94a3b8;
+    --color-text-inverse: #0f172a;
+
+    --color-bg-primary: #0f172a;
+    --color-bg-secondary: #1e293b;
+    --color-bg-tertiary: #334155;
+    --color-bg-inverse: #f8fafc;
+
+    --color-border-subtle: #334155;
+    --color-border-default: #475569;
+    --color-border-strong: #64748b;
+
+    --color-accent: var(--color-brand-blue-light);
+    --color-accent-hover: var(--color-brand-blue);
+    --color-accent-bg: #1e3a5f;
+    --color-accent-border: #1e40af;
+
+    --color-secondary: var(--color-brand-purple-light);
+    --color-secondary-hover: var(--color-brand-purple);
+    --color-secondary-bg: #3b2f7a;
+    --color-secondary-border: #5b21b6;
+
+    --color-success: #34d399;
+    --color-success-bg: #064e3b;
+    --color-warning: #fbbf24;
+    --color-warning-bg: #78350f;
+    --color-error: #f87171;
+    --color-error-bg: #7f1d1d;
+
+    --color-focus: var(--color-brand-blue-light);
+    --color-focus-offset: #0f172a;
+
+    --color-header-bg: rgba(15, 23, 42, 0.9);
+    --color-header-border: var(--color-border-subtle);
+  }
+}
+
+/* ==========================================================================
+   Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-instant: 0ms;
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
+    --duration-slower: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   Focus Visible
+   ========================================================================== */
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-tooltip);
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+  font: var(--font-weight-medium) var(--text-sm) / var(--leading-normal) var(--font-body);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: top var(--duration-fast) var(--ease-out);
+}
+
+.skip-link:focus {
+  top: var(--space-4);
+}

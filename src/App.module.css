@@ -1,0 +1,17 @@
+.main {
+  min-height: 100vh;
+}
+
+/* Ensure sections don't collapse */
+section {
+  position: relative;
+}
+
+/* Smooth scroll for anchor links (respects prefers-reduced-motion) */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Focus styles for skip link are in tokens.css */

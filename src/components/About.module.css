@@ -1,0 +1,127 @@
+.section {
+  padding: var(--section-padding-y) 0;
+  background: var(--color-bg-secondary);
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--section-padding-x);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-10);
+  margin-bottom: var(--space-16);
+}
+
+.content {
+  max-width: var(--container-narrow);
+}
+
+.headline {
+  font-size: var(--text-h2);
+  margin: 0 0 var(--space-6);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.body p {
+  margin: 0;
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  justify-content: flex-start;
+}
+
+.stat {
+  flex: 1;
+  min-width: 120px;
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-extrabold);
+  font-size: var(--text-display-sm);
+  color: var(--color-text-primary);
+  line-height: var(--leading-tight);
+}
+
+.statLabel {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+}
+
+.values {
+  border-top: 1px solid var(--color-border-subtle);
+  padding-top: var(--space-12);
+}
+
+.valuesHeadline {
+  font-size: var(--text-h3);
+  margin: 0 0 var(--space-8);
+  text-align: center;
+}
+
+.valuesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+
+.valueCard {
+  padding: var(--space-6);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.valueTitle {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--text-lg);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-3);
+}
+
+.valueDescription {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: var(--leading-relaxed);
+}
+
+/* Tablet */
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  .stats {
+    justify-content: center;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .valuesGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No animations in this section */
+}
