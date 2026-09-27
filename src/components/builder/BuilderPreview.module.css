@@ -1,0 +1,79 @@
+.layer {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s var(--ease-out, ease), transform 0.5s var(--ease-out, ease);
+}
+.layer[data-active='true'] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Shared card chrome for all preview types */
+.frame,
+.phoneFrame,
+.pipelineFrame,
+.chatFrame {
+  background: var(--color-bg-primary, #fff);
+  border: 1px solid var(--color-border-default, #dde2ef);
+  border-radius: var(--radius-lg, 14px);
+  box-shadow: var(--shadow-lg, 0 20px 50px rgba(20, 20, 50, 0.12));
+  overflow: hidden;
+  min-height: 320px;
+}
+
+/* Website preview */
+.frame { padding: 0 0 var(--space-6, 24px); display: flex; flex-direction: column; gap: var(--space-4, 16px); }
+.browserBar {
+  display: flex; gap: 6px; padding: var(--space-3, 12px) var(--space-4, 16px);
+  background: var(--color-bg-tertiary, #f2f4fa); border-bottom: 1px solid var(--color-border-subtle, #e7eaf3);
+}
+.browserBar span { width: 9px; height: 9px; border-radius: 50%; background: var(--color-border-default, #dde2ef); }
+.wsHero { padding: 0 var(--space-6, 24px); display: flex; flex-direction: column; gap: 10px; }
+.wsHeroLine { height: 16px; border-radius: 6px; background: var(--color-accent-bg, #e2f1fb); }
+.wsHeroLine:first-child { background: var(--color-accent, #1a8fd0); height: 22px; }
+.wsCards { display: flex; gap: var(--space-3, 12px); padding: 0 var(--space-6, 24px); }
+.wsCard { flex: 1; height: 64px; border-radius: var(--radius-md, 10px); background: var(--color-bg-tertiary, #f2f4fa); border: 1px solid var(--color-border-subtle, #e7eaf3); }
+.wsForm { padding: 0 var(--space-6, 24px); display: flex; gap: var(--space-3, 12px); }
+.wsInput { flex: 1; height: 36px; border-radius: var(--radius-md, 8px); border: 1px solid var(--color-border-default, #dde2ef); }
+.wsButton { width: 96px; height: 36px; border-radius: var(--radius-md, 8px); background: var(--color-accent, #1a8fd0); }
+
+/* App preview */
+.phoneFrame {
+  width: 220px; margin: 0 auto; min-height: 380px;
+  padding: var(--space-4, 16px); display: flex; flex-direction: column; gap: var(--space-4, 16px);
+}
+.phoneNotch { width: 60px; height: 6px; border-radius: 4px; background: var(--color-border-default, #dde2ef); margin: 0 auto; }
+.calendarGrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.calendarCell { aspect-ratio: 1; border-radius: 4px; background: var(--color-bg-tertiary, #f2f4fa); }
+.calendarCell[data-highlight='true'] { background: var(--color-accent, #1a8fd0); }
+.slotPill, .confirmBanner {
+  padding: var(--space-2, 8px) var(--space-3, 12px); border-radius: 999px; font-size: var(--text-sm, 14px);
+  text-align: center; font-weight: 600;
+}
+.slotPill { background: var(--color-accent-bg, #e2f1fb); color: var(--color-accent, #1a8fd0); }
+.confirmBanner { background: #e3f8ec; color: #1f9d55; }
+
+/* Automation pipeline preview */
+.pipelineFrame {
+  display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3, 12px);
+  padding: var(--space-6, 24px); justify-content: center;
+}
+.pipelineStation {
+  display: flex; align-items: center; gap: var(--space-2, 8px);
+  opacity: 0.35; transition: opacity 0.5s var(--ease-out, ease);
+}
+.pipelineStation[data-active='true'] { opacity: 1; }
+.pipelineDot { width: 10px; height: 10px; border-radius: 50%; background: var(--color-accent, #1a8fd0); }
+.pipelineLabel { font-size: var(--text-sm, 14px); font-weight: 600; white-space: nowrap; }
+.pipelineArrow { color: var(--color-text-muted, #9aa3c2); margin-left: var(--space-2, 8px); }
+
+/* Assistant preview */
+.chatFrame { display: flex; flex-direction: column; gap: var(--space-3, 12px); padding: var(--space-4, 16px); }
+.chatHeader { font-weight: 700; padding-bottom: var(--space-2, 8px); border-bottom: 1px solid var(--color-border-subtle, #e7eaf3); }
+.bubble { max-width: 80%; padding: var(--space-3, 12px); border-radius: var(--radius-md, 10px); font-size: var(--text-sm, 14px); }
+.bubbleUser { align-self: flex-end; background: var(--color-accent, #1a8fd0); color: #fff; border-bottom-right-radius: 2px; }
+.bubbleAssistant { align-self: flex-start; background: var(--color-bg-tertiary, #f2f4fa); border-bottom-left-radius: 2px; }
+.handoffPill {
+  align-self: flex-start; font-size: var(--text-sm, 14px); font-weight: 600; color: var(--color-accent, #1a8fd0);
+  padding: 6px 10px; border: 1px solid var(--color-accent, #1a8fd0); border-radius: 999px;
+}
