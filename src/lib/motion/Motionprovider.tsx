@@ -66,20 +66,16 @@ export function MotionProvider({ children }: { children: ReactNode }) {
 
     lenis.on('scroll', ScrollTrigger.update);
 
-    gsap.ticker.add((time) => {
+    const raf = (time: number) => {
       lenis.raf(time * 1000);
-    });
+    };
+    gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
-
-    // Keep ScrollTrigger's own measurements correct on Lenis-driven scroll.
-    ScrollTrigger.defaults({ scroller: document.body });
 
     return () => {
       lenis.destroy();
       lenisRef.current = null;
-      gsap.ticker.remove((time) => {
-        lenis.raf(time * 1000);
-      });
+      gsap.ticker.remove(raf);
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
     // Intentionally empty deps: this runs once. prefersReducedMotion is fixed

@@ -8,8 +8,8 @@ import { useMotion } from './MotionProvider';
  * component unmounts or deps change. Skips entirely when reduced motion
  * is active — call site must still render a correct final state.
  */
-export function useScopedGsap(
-  scopeRef: RefObject<HTMLElement>,
+export function useScopedGsap<T extends HTMLElement>(
+  scopeRef: RefObject<T | null>,
   setup: (context: gsap.Context) => void,
   deps: unknown[] = []
 ) {
@@ -21,7 +21,7 @@ export function useScopedGsap(
       return;
     }
 
-    const ctx = gsap.context(() => setup(ctx), scopeRef);
+    const ctx = gsap.context((context) => setup(context), scopeRef);
     ctxRef.current = ctx;
 
     return () => {

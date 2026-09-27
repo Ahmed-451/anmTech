@@ -1,124 +1,98 @@
-.section {
-  padding: var(--section-padding-y) 0;
-  background: var(--color-bg-secondary);
-}
+.section { padding: clamp(48px, 8vw, 96px) 0; }
 
 .container {
-  max-width: var(--container-max);
+  max-width: var(--container-max, 1120px);
   margin: 0 auto;
-  padding: 0 var(--section-padding-x);
-}
-
-.grid {
+  padding: 0 var(--section-padding-x, 24px);
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-10);
+  grid-template-columns: 1.4fr 1fr;
+  gap: clamp(32px, 5vw, 56px);
   align-items: start;
 }
 
-.content {
-  max-width: 560px;
-}
+.intro { color: var(--color-text-secondary, #525b7e); margin-top: 4px; }
 
-.headline {
-  font-size: var(--text-h2);
-  margin: 0 0 var(--space-3);
-}
-
-.subheadline {
-  font-size: var(--text-base);
-  color: var(--color-text-muted);
-  margin: 0 0 var(--space-8);
-}
-
-.form {
+.stepper {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-5);
+  gap: 10px;
+  list-style: none;
+  margin: var(--space-6, 24px) 0;
+  padding: 0;
+}
+.stepper li {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--text-sm, 13px); font-weight: 700;
+  background: var(--color-bg-tertiary, #f2f4fa);
+  color: var(--color-text-muted, #9aa3c2);
+}
+.stepper li[data-active='true'] { background: var(--color-accent, #1a8fd0); color: #fff; }
+.stepper li[data-done='true'] { background: var(--color-accent-bg, #e2f1fb); color: var(--color-accent, #1a8fd0); }
+
+.fieldset { border: none; padding: 0; margin: 0 0 var(--space-6, 24px); }
+.legend { font-weight: 700; font-size: var(--text-lg, 18px); padding: 0 0 var(--space-4, 16px); }
+
+.checkGrid, .radioGrid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3, 12px); }
+.checkOption {
+  display: flex; align-items: center; gap: 10px;
+  padding: var(--space-3, 12px); border: 1.5px solid var(--color-border-default, #dde2ef);
+  border-radius: var(--radius-md, 10px); cursor: pointer; font-size: var(--text-sm, 14px); font-weight: 600;
+}
+.checkOption:has(input:checked) { border-color: var(--color-accent, #1a8fd0); background: var(--color-accent-bg, #e2f1fb); }
+
+.radioOption {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: var(--space-4, 16px); border: 1.5px solid var(--color-border-default, #dde2ef);
+  border-radius: var(--radius-md, 10px); cursor: pointer;
+}
+.radioOption:has(input:checked) { border-color: var(--color-accent, #1a8fd0); background: var(--color-accent-bg, #e2f1fb); }
+.radioOption span { display: flex; flex-direction: column; gap: 2px; }
+.radioOption small { color: var(--color-text-secondary, #525b7e); font-size: var(--text-xs, 12px); }
+.radioOption input { margin-top: 4px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: var(--text-sm, 14px); margin-bottom: var(--space-4, 16px); }
+.optional { font-weight: 400; color: var(--color-text-muted, #9aa3c2); }
+
+.error {
+  color: #d1433a; font-size: var(--text-sm, 13px); font-weight: 600; margin-top: 6px;
 }
 
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+.navRow { display: flex; gap: var(--space-3, 12px); justify-content: flex-start; margin-top: var(--space-4, 16px); }
+
+.honeypot {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px; height: 1px; overflow: hidden;
 }
 
-.formNote {
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
-  margin: var(--space-2) 0 0;
-  text-align: center;
+.srOnly {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
 
-.formNote a {
-  color: var(--color-accent);
+/* Summary column */
+.summaryColumn { position: sticky; top: 100px; }
+.summaryCard {
+  background: var(--color-bg-tertiary, #f2f4fa);
+  border: 1px solid var(--color-border-subtle, #e7eaf3);
+  border-radius: var(--radius-lg, 14px);
+  padding: var(--space-6, 24px);
 }
+.summaryCard h3 { margin: 0 0 var(--space-2, 8px); font-size: var(--text-base, 16px); }
+.summaryText { color: var(--color-text-secondary, #525b7e); margin: 0; }
+.summaryContact { margin: var(--space-3, 12px) 0 0; font-size: var(--text-sm, 14px); font-weight: 600; }
 
-.sidebar {
-  background: var(--color-bg-primary);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-lg);
-  padding: var(--space-6);
+/* Success state */
+.successCard {
+  max-width: 60ch; margin: 0 auto; text-align: left;
+  background: var(--color-bg-tertiary, #f2f4fa); border-radius: var(--radius-lg, 14px);
+  padding: clamp(24px, 5vw, 48px);
 }
+.actions { display: flex; gap: var(--space-3, 12px); margin: var(--space-6, 24px) 0; flex-wrap: wrap; }
+.privacyNote { font-size: var(--text-xs, 12px); color: var(--color-text-muted, #9aa3c2); margin: 0; }
 
-.sidebarTitle {
-  font-family: var(--font-display);
-  font-weight: var(--font-weight-bold);
-  font-size: var(--text-lg);
-  color: var(--color-text-primary);
-  margin: 0 0 var(--space-6);
-}
-
-.contactInfo {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-5);
-}
-
-.contactItem {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
-
-.contactLabel {
-  font-size: var(--text-xs);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.contactValue {
-  font-size: var(--text-sm);
-  color: var(--color-text-primary);
-  text-decoration: none;
-  transition: color var(--duration-fast) var(--ease-out);
-}
-
-.contactValue:hover {
-  color: var(--color-accent);
-  text-decoration: none;
-}
-
-.contactValue:not(a) {
-  line-height: var(--leading-relaxed);
-}
-
-/* Tablet and up */
-@media (min-width: 768px) {
-  .grid {
-    grid-template-columns: 1fr 340px;
-  }
-
-  .sidebar {
-    position: sticky;
-    top: calc(var(--space-6) + 80px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .contactValue {
-    transition: none !important;
-  }
+@media (max-width: 860px) {
+  .container { grid-template-columns: 1fr; }
+  .checkGrid, .radioGrid { grid-template-columns: 1fr; }
+  .summaryColumn { position: static; }
 }
