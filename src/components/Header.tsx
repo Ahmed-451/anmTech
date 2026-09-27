@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { getContent } from '../content/site';
+import { useMotion } from '../lib/motion/MotionProvider';
 import styles from './Header.module.css';
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const content = getContent();
+  const { scrollTo } = useMotion();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,6 +16,16 @@ export function Header() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  function handleNavClick(e: React.MouseEvent<HTMLAnchorElement>, href: string) {
+    // Only intercept in-page anchors (e.g. "#services"). Let external/real
+    // links (e.g. "/", a future "/careers") behave normally.
+    if (!href.startsWith('#')) return;
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    scrollTo(href);
+    window.history.pushState(null, '', href);
+  }
 
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
@@ -26,7 +38,11 @@ export function Header() {
           <ul className={`${styles.navList} ${mobileMenuOpen ? styles.open : ''}`}>
             {content.nav.items.map((item) => (
               <li key={item.href}>
-                <a href={item.href} className={styles.navLink}>
+                <a
+                  href={item.href}
+                  className={styles.navLink}
+                  onClick={(e) => handleNavClick(e, item.href)}
+                >
                   {item.label}
                 </a>
               </li>
@@ -36,6 +52,7 @@ export function Header() {
           <a
             href={content.nav.cta.href}
             className={`${styles.navCta} btn btn-primary`}
+            onClick={(e) => handleNavClick(e, content.nav.cta.href)}
           >
             {content.nav.cta.label}
           </a>
