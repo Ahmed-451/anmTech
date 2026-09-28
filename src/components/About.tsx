@@ -1,4 +1,5 @@
 import { getContent } from '../content/site';
+import { Team } from './Team';
 import styles from './About.module.css';
 
 export function About() {
@@ -19,14 +20,18 @@ export function About() {
             </div>
           </div>
 
-          <div className={styles.stats} aria-label="Company statistics">
-            {content.stats.map((stat, i) => (
-              <div key={i} className={styles.stat}>
-                <div className={styles.statValue}>{stat.value}</div>
-                <div className={styles.statLabel}>{stat.label}</div>
-              </div>
-            ))}
-          </div>
+          {content.stats.length > 0 ? (
+            <div className={styles.stats} aria-label="Company statistics">
+              {content.stats.map((stat, i) => (
+                <div key={i} className={styles.stat}>
+                  <div className={styles.statValue}>{stat.value}</div>
+                  <div className={styles.statLabel}>{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <Team members={content.team} />
+          )}
         </div>
 
         <div className={styles.values} aria-labelledby="values-heading">

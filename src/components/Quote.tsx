@@ -1,24 +1,14 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
+import { getContent } from '../content/site';
 import { getSelectedScenario } from '../lib/builderSelection';
 import styles from './Quote.module.css';
 
-// TODO: align these with the canonical service list in site.ts once its
-// shape is confirmed — kept local for now to avoid guessing at that file.
-const SERVICE_OPTIONS = [
-  'Website development',
-  'Custom software',
-  'Mobile app development',
-  'AI and automation',
-  'Data and BI',
-  'Resourcing',
-] as const;
-
-// Maps a hero scenario id to the service it should pre-check here.
-const SCENARIO_TO_SERVICE: Record<string, (typeof SERVICE_OPTIONS)[number]> = {
-  website: 'Website development',
-  booking: 'Mobile app development',
-  invoices: 'AI and automation',
-  assistant: 'AI and automation',
+// Maps a hero scenario id to the site.ts service id it should pre-check.
+const SCENARIO_TO_SERVICE_ID: Record<string, string> = {
+  website: 'website-development',
+  booking: 'mobile-apps',
+  invoices: 'ai-automation',
+  assistant: 'ai-automation',
 };
 
 const SIZE_OPTIONS = [
@@ -31,13 +21,12 @@ const SIZE_OPTIONS = [
 type Step = 1 | 2 | 3;
 
 interface FormState {
-  services: string[];
+  serviceIds: string[];
   size: string;
   name: string;
   company: string;
   email: string;
   message: string;
-  website: string; // honeypot — must stay empty
 }
 
 interface FormErrors {
@@ -49,35 +38,19 @@ interface FormErrors {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function buildMailto(form: FormState): { href: string; text: string } {
-  const to = 'contact@anmtech.be';
-  const subject = `Quote request: ${form.services.join(', ') || 'General enquiry'}`;
-  const sizeLabel = SIZE_OPTIONS.find((s) => s.id === form.size)?.label ?? '';
-  const lines = [
-    `Name: ${form.name}`,
-    form.company ? `Company: ${form.company}` : null,
-    `Email: ${form.email}`,
-    `Services: ${form.services.join(', ') || 'Not specified'}`,
-    sizeLabel ? `Project size: ${sizeLabel}` : null,
-    form.message ? `\nMessage:\n${form.message}` : null,
-  ].filter(Boolean);
-  const body = lines.join('\n');
-  return {
-    href: `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
-    text: `To: ${to}\nSubject: ${subject}\n\n${body}`,
-  };
-}
-
 export function Quote() {
+  const content = getContent();
+  const services = content.services;
+  const contact = content.contact;
+
   const [step, setStep] = useState<Step>(1);
   const [form, setForm] = useState<FormState>({
-    services: [],
+    serviceIds: [],
     size: '',
     name: '',
     company: '',
     email: '',
     message: '',
-    website: '',
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
@@ -87,10 +60,11 @@ export function Quote() {
 
   useEffect(() => {
     const scenarioId = getSelectedScenario();
-    const service = scenarioId ? SCENARIO_TO_SERVICE[scenarioId] : undefined;
-    if (service) {
-      setForm((f) => (f.services.includes(service) ? f : { ...f, services: [service] }));
+    const serviceId = scenarioId ? SCENARIO_TO_SERVICE_ID[scenarioId] : undefined;
+    if (serviceId && services.some((s) => s.id === serviceId)) {
+      setForm((f) => (f.serviceIds.includes(serviceId) ? f : { ...f, serviceIds: [serviceId] }));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -103,18 +77,24 @@ export function Quote() {
     if (liveRegionRef.current) liveRegionRef.current.textContent = text;
   }
 
-  function toggleService(service: string) {
+  function toggleService(id: string) {
     setForm((f) => ({
       ...f,
-      services: f.services.includes(service)
-        ? f.services.filter((s) => s !== service)
-        : [...f.services, service],
+      serviceIds: f.serviceIds.includes(id)
+        ? f.serviceIds.filter((s) => s !== id)
+        : [...f.serviceIds, id],
     }));
+  }
+
+  function serviceTitles(ids: string[]): string[] {
+    return ids
+      .map((id) => services.find((s) => s.id === id)?.title)
+      .filter((t): t is string => Boolean(t));
   }
 
   function validateStep(current: Step): FormErrors {
     const e: FormErrors = {};
-    if (current === 1 && form.services.length === 0) {
+    if (current === 1 && form.serviceIds.length === 0) {
       e.services = 'Pick at least one service.';
     }
     if (current === 2 && !form.size) {
@@ -144,9 +124,28 @@ export function Quote() {
     setStep((s) => (s > 1 ? ((s - 1) as Step) : s));
   }
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    if (form.website) return; // honeypot tripped — silently drop
+  function buildMailto(): { href: string; text: string } {
+    const to = contact.email;
+    const titles = serviceTitles(form.serviceIds);
+    const subject = `Quote request: ${titles.join(', ') || 'General enquiry'}`;
+    const sizeLabel = SIZE_OPTIONS.find((s) => s.id === form.size)?.label ?? '';
+    const lines = [
+      `Name: ${form.name}`,
+      form.company ? `Company: ${form.company}` : null,
+      `Email: ${form.email}`,
+      `Services: ${titles.join(', ') || 'Not specified'}`,
+      sizeLabel ? `Project size: ${sizeLabel}` : null,
+      form.message ? `\nMessage:\n${form.message}` : null,
+    ].filter(Boolean);
+    const body = lines.join('\n');
+    return {
+      href: `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
+      text: `To: ${to}\nSubject: ${subject}\n\n${body}`,
+    };
+  }
+
+  function handleSubmit(e?: FormEvent) {
+    e?.preventDefault();
 
     const finalErrors = validateStep(3);
     setErrors(finalErrors);
@@ -155,14 +154,22 @@ export function Quote() {
       return;
     }
 
-    const { href } = buildMailto(form);
-    window.location.href = href;
+    try {
+      const { href } = buildMailto();
+      window.location.href = href;
+    } catch (err) {
+      // A blocked or unhandled mailto: should never trap the user — fall
+      // through to the success screen either way, where "Copy request"
+      // gives them a working alternative.
+      console.error('Could not open mail client:', err);
+    }
+
     setSubmitted(true);
     announce('Your request has been prepared in your email app.');
   }
 
   async function handleCopy() {
-    const { text } = buildMailto(form);
+    const { text } = buildMailto();
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -175,11 +182,13 @@ export function Quote() {
 
   const summaryText = useMemo(() => {
     const parts: string[] = [];
-    if (form.services.length) parts.push(form.services.join(', '));
+    const titles = serviceTitles(form.serviceIds);
+    if (titles.length) parts.push(titles.join(', '));
     const size = SIZE_OPTIONS.find((s) => s.id === form.size);
     if (size) parts.push(size.label.toLowerCase());
     return parts.length ? parts.join(' — ') : 'Tell us what you need to see it here.';
-  }, [form.services, form.size]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.serviceIds, form.size, services]);
 
   if (submitted) {
     return (
@@ -188,9 +197,9 @@ export function Quote() {
           <div className={styles.successCard} role="status">
             <h2 id="quote-heading">Your request is ready</h2>
             <p>
-              We've opened your email app with everything filled in. If it didn't open, use
-              "Copy request" below and paste it into an email to{' '}
-              <a href="mailto:contact@anmtech.be">contact@anmtech.be</a>.
+              We've opened your email app with everything filled in. If nothing opened —
+              common if your browser has no default mail app set — use "Copy request" below
+              and paste it into an email to <a href={`mailto:${contact.email}`}>{contact.email}</a>.
             </p>
             <div className={styles.actions}>
               <button type="button" className="btn btn-secondary" onClick={handleCopy}>
@@ -232,30 +241,18 @@ export function Quote() {
           </ol>
 
           <form onSubmit={handleSubmit} noValidate>
-            {/* Honeypot — hidden from real users, visible to bots */}
-            <input
-              type="text"
-              name="website"
-              value={form.website}
-              onChange={(e) => setForm((f) => ({ ...f, website: e.target.value }))}
-              className={styles.honeypot}
-              tabIndex={-1}
-              autoComplete="off"
-              aria-hidden="true"
-            />
-
             {step === 1 && (
               <fieldset className={styles.fieldset}>
                 <legend className={styles.legend}>What do you need?</legend>
                 <div className={styles.checkGrid}>
-                  {SERVICE_OPTIONS.map((service) => (
-                    <label key={service} className={styles.checkOption}>
+                  {services.map((service) => (
+                    <label key={service.id} className={styles.checkOption}>
                       <input
                         type="checkbox"
-                        checked={form.services.includes(service)}
-                        onChange={() => toggleService(service)}
+                        checked={form.serviceIds.includes(service.id)}
+                        onChange={() => toggleService(service.id)}
                       />
-                      {service}
+                      {service.title}
                     </label>
                   ))}
                 </div>
@@ -364,17 +361,22 @@ export function Quote() {
 
             <div className={styles.navRow}>
               {step > 1 && (
-                <button type="button" className="btn btn-secondary" onClick={goBack}>
+                <button key="back" type="button" className="btn btn-secondary" onClick={goBack}>
                   Back
                 </button>
               )}
               {step < 3 && (
-                <button type="button" className="btn btn-primary" onClick={goNext}>
+                <button key="continue" type="button" className="btn btn-primary" onClick={goNext}>
                   Continue
                 </button>
               )}
               {step === 3 && (
-                <button type="submit" className="btn btn-primary">
+                <button
+                  key="send"
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => handleSubmit()}
+                >
                   Send request
                 </button>
               )}

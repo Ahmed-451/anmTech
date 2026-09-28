@@ -20,11 +20,18 @@ export interface Service {
   features: string[];
 }
 
+export interface TeamMember {
+  name: string;
+  role: string;
+}
+
 export interface AboutContent {
   headline: string;
   body: string[];
   values: Array<{ title: string; description: string }>;
+  /** Only add stats here once ANM has verified real numbers. */
   stats: Array<{ value: string; label: string }>;
+  team: TeamMember[];
 }
 
 export interface ProofItem {
@@ -36,6 +43,7 @@ export interface ProofItem {
   company?: string;
   logo?: string;
   metrics?: Array<{ value: string; label: string }>;
+  /** Items flagged as placeholder are never rendered by the Proof section. */
   placeholder?: boolean;
 }
 
@@ -78,41 +86,46 @@ export interface SiteContent {
   proof: ProofItem[];
   contact: ContactInfo;
   footer: FooterContent;
-}const siteContentEn: SiteContent = {
+}
+
+const siteContentEn: SiteContent = {
   nav: {
     items: [
       { label: 'Services', href: '#services' },
       { label: 'About', href: '#about' },
-      { label: 'Proof', href: '#proof' },
+      { label: 'Our work', href: '#proof' },
       { label: 'Contact', href: '#contact' },
     ],
     cta: { label: 'Get a quote', href: '#quote' },
   },
   hero: {
     headline: 'We build digital products that work for your business',
-    subheadline: 'From custom software and mobile apps to AI automation and IT resourcing — ANM Technologies delivers outcomes, not just code.',
+    subheadline:
+      'From custom software and mobile apps to AI automation and IT resourcing — ANM Technologies delivers outcomes, not just code.',
     ctaPrimary: { label: 'Start a project', href: '#quote' },
-    ctaSecondary: { label: 'See our work', href: '#proof' },
+    ctaSecondary: { label: 'Meet the team', href: '#about' },
   },
   services: [
     {
       id: 'resourcing',
       title: 'IT Resourcing',
-      description: 'Senior developers and engineers who integrate with your team from day one.',
-      longDescription: 'We provide vetted senior developers, DevOps engineers, and technical leads who join your team seamlessly. No junior contractors, no handoff delays — just experienced professionals who deliver.',
+      description: 'Skilled developers and engineers who join your team and get to work.',
+      longDescription:
+        'We help teams add developers, DevOps engineers, and technical leads. Engagements can be short or long, and we match people to what your project actually needs.',
       icon: 'users',
       features: [
-        'Senior-level talent only',
-        '2-week replacement guarantee',
+        'Developers, DevOps and technical leads',
         'Flexible engagement models',
-        'Belgium-based, EU compliant',
+        'Short-term or long-term placements',
+        'Based in Belgium',
       ],
     },
     {
       id: 'custom-software',
       title: 'Custom Software',
       description: 'Tailored applications that solve your specific business problems.',
-      longDescription: 'We design and build custom web applications, APIs, and backend systems using modern architectures. From legacy modernisation to greenfield platforms, we focus on maintainability and scale.',
+      longDescription:
+        'We design and build custom web applications, APIs, and backend systems using modern architectures. From legacy modernisation to greenfield platforms, we focus on maintainability and scale.',
       icon: 'code',
       features: [
         'Domain-driven design',
@@ -125,7 +138,8 @@ export interface SiteContent {
       id: 'website-development',
       title: 'Website Development',
       description: 'High-performance marketing sites and web platforms that convert.',
-      longDescription: 'We build fast, accessible, SEO-ready websites using modern frameworks. Whether you need a marketing site, a headless CMS implementation, or a complex web platform, we deliver pixel-perfect results.',
+      longDescription:
+        'We build fast, accessible, SEO-ready websites using modern frameworks. Whether you need a marketing site, a headless CMS implementation, or a complex web platform, we deliver pixel-perfect results.',
       icon: 'globe',
       features: [
         'Core Web Vitals optimised',
@@ -138,7 +152,8 @@ export interface SiteContent {
       id: 'mobile-apps',
       title: 'Mobile Apps',
       description: 'Native and cross-platform apps your users will love.',
-      longDescription: 'We build iOS and Android applications using React Native and native tooling. From consumer apps to enterprise tools, we handle the full lifecycle — strategy, design, development, and App Store deployment.',
+      longDescription:
+        'We build iOS and Android applications using React Native and native tooling. From consumer apps to enterprise tools, we handle the full lifecycle — strategy, design, development, and App Store deployment.',
       icon: 'smartphone',
       features: [
         'React Native / Swift / Kotlin',
@@ -151,7 +166,8 @@ export interface SiteContent {
       id: 'ai-automation',
       title: 'AI & Automation',
       description: 'Practical AI that reduces manual work and unlocks new capabilities.',
-      longDescription: 'We implement AI solutions that solve real problems: document processing, customer support automation, data extraction, and workflow orchestration. No hype — just measurable efficiency gains.',
+      longDescription:
+        'We implement AI solutions that solve real problems: document processing, customer support automation, data extraction, and workflow orchestration. No hype — just measurable efficiency gains.',
       icon: 'sparkles',
       features: [
         'LLM integration & fine-tuning',
@@ -164,7 +180,8 @@ export interface SiteContent {
       id: 'data-bi',
       title: 'Data & BI',
       description: 'Turn scattered data into decisions with dashboards and pipelines.',
-      longDescription: 'We build data platforms, ETL pipelines, and interactive dashboards that give leadership real-time visibility. From setting up warehouses to designing self-serve analytics, we make data usable.',
+      longDescription:
+        'We build data platforms, ETL pipelines, and interactive dashboards that give leadership real-time visibility. From setting up warehouses to designing self-serve analytics, we make data usable.',
       icon: 'chart',
       features: [
         'Modern data stack (dbt, Airflow, etc.)',
@@ -175,62 +192,41 @@ export interface SiteContent {
     },
   ],
   about: {
-    headline: 'Built on Belgian engineering, trusted across Europe',
+    headline: 'A Belgian software team building practical technology',
     body: [
-      'ANM Technologies was founded in Zaventem with a simple premise: software should create measurable value, not just check boxes. We\'ve grown into a team of 50+ engineers, designers, and strategists who share that standard.',
-      'We work with scale-ups, enterprises, and public sector clients across Benelux and beyond. Our track record spans fintech, logistics, healthcare, and government — domains where reliability and compliance aren\'t optional.',
+      'ANM Technologies is a startup based in Zaventem, Belgium. We build websites, custom software, mobile apps, and AI automation, with a simple premise: software should create measurable value for the business that uses it.',
+      'We are early in our journey, and we care more about doing our first projects properly than about looking bigger than we are. If you have a problem worth solving, we would like to hear about it.',
     ],
     values: [
-      { title: 'Outcomes over output', description: 'We measure success by business impact, not lines of code shipped.' },
-      { title: 'Senior by default', description: 'Every project is led by experienced architects and engineers.' },
-      { title: 'Transparent partnership', description: 'No hidden costs, no vendor lock-in, honest advice — even when it means saying no.' },
-      { title: 'Local presence, global reach', description: 'Based in Zaventem, working across Europe with on-site availability.' },
+      {
+        title: 'Outcomes over output',
+        description: 'We measure success by business impact, not lines of code shipped.',
+      },
+      {
+        title: 'Simple and maintainable',
+        description: 'We favour clear designs and tested code that your team can keep running.',
+      },
+      {
+        title: 'Transparent partnership',
+        description: 'Honest advice and clear communication, even when it means saying no.',
+      },
+      {
+        title: 'Local and approachable',
+        description: 'Based in Zaventem, Belgium, and happy to meet in person.',
+      },
     ],
-    stats: [
-      { value: '50+', label: 'Engineers & designers' },
-      { value: '100+', label: 'Projects delivered' },
-      { value: '95%', label: 'Client retention rate' },
-      { value: '7', label: 'Years in business' },
+    // Intentionally empty until ANM has verified real numbers to show.
+    stats: [],
+    team: [
+      { name: 'Neha Mishra', role: 'Founder & CEO' },
+      { name: 'Akhileshwar Kumar', role: 'Co-founder' },
+      { name: 'Ruchita Lovi', role: 'Finance Head' },
+      { name: 'Rakesh Ranjan', role: 'Sales Head' },
     ],
   },
-  proof: [
-    {
-      type: 'case-study',
-      headline: '[PLACEHOLDER: Real case study needed]',
-      body: 'A European fintech needed to modernise their core banking platform. We delivered a phased migration to a cloud-native architecture, reducing deployment time from weeks to hours.',
-      metrics: [
-        { value: '80%', label: 'Faster deployments' },
-        { value: '40%', label: 'Cost reduction' },
-        { value: '99.99%', label: 'Uptime achieved' },
-      ],
-      placeholder: true,
-    },
-    {
-      type: 'case-study',
-      headline: '[PLACEHOLDER: Real case study needed]',
-      body: 'A logistics company automated their customs documentation pipeline using AI-powered document processing, eliminating 200+ hours of manual work per month.',
-      metrics: [
-        { value: '200h+', label: 'Monthly hours saved' },
-        { value: '95%', label: 'Accuracy rate' },
-        { value: '3 weeks', label: 'Time to production' },
-      ],
-      placeholder: true,
-    },
-    {
-      type: 'testimonial',
-      headline: '[PLACEHOLDER: Real testimonial needed]',
-      body: 'ANM didn\'t just build our platform — they challenged our assumptions and delivered a better product than we specified. True partners.',
-      author: 'CTO',
-      role: 'Scale-up, Brussels',
-      placeholder: true,
-    },
-    {
-      type: 'partner',
-      headline: 'Technology partners',
-      body: 'We work with the best tools in the ecosystem.',
-      placeholder: true,
-    },
-  ],
+  // Intentionally empty. Add real, approved case studies here as they exist.
+  // Anything flagged `placeholder: true` is never shown on the site.
+  proof: [],
   contact: {
     address: {
       street: 'Vilvoordelaan 55',
@@ -265,12 +261,10 @@ export interface SiteContent {
         { label: 'GDPR', href: '#' },
       ],
     },
-    social: [
-      { label: 'LinkedIn', href: 'https://linkedin.com/company/anm-technologies', icon: 'linkedin' },
-      { label: 'GitHub', href: 'https://github.com/anmtech', icon: 'github' },
-      { label: 'Twitter', href: 'https://twitter.com/anmtech', icon: 'twitter' },
-    ],
-    copyright: '© 2025 ANM Technologies. All rights reserved.',
+    // TODO: add ANM's real social profile URLs. The previous entries were
+    // guesses and may point at accounts belonging to other companies.
+    social: [],
+    copyright: '© 2026 ANM Technologies. All rights reserved.',
   },
 };
 
